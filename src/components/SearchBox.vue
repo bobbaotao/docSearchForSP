@@ -1,60 +1,19 @@
 <template>
   <div class="container">
-    <el-row :gutter="20">
-      <el-col :span="10">
-      <el-switch v-model='isNormalSearch' on-text="Normal Search" off-text="Advanced Search"
-                on-color='#20A0FF' off-color="#20A0FF" disable="false" :width=150>
-      </el-switch>
-    </el-col>
-  </el-row>
-    <div class="searchContainer" v-if="isNormalSearch">
-      <el-row :gutter="20" class="bigRow">
-        <el-col :span="10">
-          <el-input style="width:50%" placeholder="Please input keywords" icon="search" v-model="searchKeywords" :on-icon-click="search">
+    <div class="searchContainer" >
+      <el-row :gutter="10" class="bigRow">
+        <el-col :span="10" :offset="7">
+          <el-input placeholder="Please input keywords" icon="search" v-model="searchKeywords" :on-icon-click="search">
           </el-input>
         </el-col>
       </el-row>
-    </div>
-    <div class="searchContainer" v-else>
-      <el-row :gutter="20" class="bigRow">
-        <el-col :span="3">
-          Keywords:
+      <el-row :gutter="10" class="bigRow btnRow">
+        <el-col :span="4" :offset="8">
+          <el-button type="primary" icon="search" v-on:click="search" :disabled="searchKeywords == null || searchKeywords == '' || searchKeywords.trim() == ''">Search</el-button>
         </el-col>
-        <el-col :span="7">
-          <el-input placeholder="Please input keywords" v-model="searchKeywords">
-          </el-input>
+        <el-col :span="4">
+          <el-button type="primary" icon="plus" v-on:click="advancedSearch">Advanced Search</el-button>
         </el-col>
-        <el-col :span="3">
-          <el-button type="primary" icon="search" v-on:click="search">Search</el-button>
-        </el-col>
-        <el-col :span="7">
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" class="bigRow">
-        <el-col :span="3">
-          Create Date
-        </el-col>
-        <el-col :span="7">
-          From: <el-date-picker style="float:left" v-model="createDateFrom" type="date" placeholder="Please Select From Date">
-          </el-date-picker>
-        </el-col>
-        <el-col :span="10">
-          To: <el-date-picker style="float:left" v-model="createDateTo" type="date" placeholder="Please Select To Date">
-          </el-date-picker>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" class="bigRow">
-        <el-col :span="3">
-          Author:
-        </el-col>
-        <el-col :span="7">
-          <el-input  placeholder="Author" v-model="authorKeywords">
-          </el-input>
-        </el-col>
-        <el-col :span="10">
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" class="bigRow">
       </el-row>
     </div>
   </div>
@@ -69,57 +28,27 @@
         return {
           isNormalSearch : true,
           searchKeywords: "",
-          createDateRange: "",
-          authorKeywords: "",
-          createDateFrom:"",
-          createDateFrom: "",
-          department: "",
-          projectName: "",
-          projectDocType: ""
+          departmentOptions: [{value: "MED"},{value: "MIK"},{value: "IMT"},{value: "Strategy"},{value: "Others"}],
+          projectDocTypeOptions:[{value: "Startegy"},{value: "Financial Report"},{value: "Economic Report"},{value: "Marketing Report"},{value: "Others"}]
         }
       },
       methods: {
         search: function() {
           var strquery="";
-          if(this.isNormalSearch) {
-            strquery = "<Where><Or><Contains><FieldRef Name='Title' /><Value Type='Text'>" + this.searchKeywords +
-            "</Value></Contains><Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'>" + this.searchKeywords
-             + "</Value></Contains></Or></Where>";
-          } else {
-            var searchConditions = new array();
-            if(this.searchKeywords != "") {
-              searchConditions.push("<Or><Contains><FieldRef Name='Title' /><Value Type='Text'>" + this.searchKeywords +
-              "</Value></Contains><Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'>" + this.searchKeywords
-               + "</Value></Contains></Or>");
-            }
-            if(this.authorKeywords != "") {
-              searchConditions.push("<Contains><FieldRef Name='Author' /><Value Type='User'>" + this.authorKeywords + "</Value></Contains>");
-            }
-            // if(this.createDateRange != null && this.createDateRange.length && this.createDateRange.length > 0) {
-            //   var startDate = this.createDateRange[0].toLocaleDateString();
-            //   var endDate = this.createDateRange[1].toLocaleDateString();
-            //   searchConditions.push("<And><Geq><FieldRef Name='Created' /><Value IncludeTimeValue='FALSE' Type='DateTime'>"
-            //   + startDate + "</Value></Geq><Leq><FieldRef Name='Created' /><Value IncludeTimeValue='FALSE' Type='DateTime'>" +
-            //   endDate + "</Value></Leq></And>");
-            // }
-            for(var i=0; i< searchConditions.length; i++) {
-              if(i != 0){
-                strquery = "<And>" + strquery + searchConditions[i] + "</And>";
-              } else {
-                strquery = searchConditions[i];
-              }
-            }
 
-            strquery = "<Where>" + strquery + "</Where><OrderBy><FieldRef Name='Created' Ascending='False' /></OrderBy>";
-          }
-          this.$emit("dosearch", strquery);
+            strquery = "<Where><Or><Or><Or><Or><Or><Contains><FieldRef Name='Title' /><Value Type='Text'>" + this.searchKeywords +
+            "</Value></Contains><Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'>" + this.searchKeywords
+             + "</Value></Contains></Or><Contains><FieldRef Name='FileLeafRef' /><Value Type='Text'>" + this.searchKeywords +
+             "</Value></Contains></Or><Contains><FieldRef Name='ZeissProjectName' /><Value Type='Text'>" + this.searchKeywords
+             + "</Value></Contains></Or><Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'>" + this.searchKeywords
+             + "</Value></Eq></Or> <Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'>" + this.searchKeywords +
+             "</Value></Eq></Or></Where>";
+
+          //this.$emit("dosearch", strquery);
+          this.$router.push({name: 'SearchPage', params: {queryText: strquery}});
         },
-        switchSearch: function() {
-          if(this.isAdvanceSearch) {
-            this.isAdvanceSearch = false;
-          } else {
-            this.isAdvanceSearch = true;
-          }
+        advancedSearch: function() {
+          this.$router.push({name: 'AdvancedSearch'});
         }
       }
   }
@@ -132,19 +61,21 @@
 }
 .searchSwitchContainer
 {
-  padding-left: 50px;
   padding-top: 20px;
   display: block;
 }
 .searchContainer
 {
-  padding-left: 50px;
-  padding-top: 15px;
+  padding-top: 120px;
   display: block;
   width: 100%;
 }
 .bigRow
 {
   padding-top: 10px;
+}
+.btnRow
+{
+  margin-top: 25px;
 }
 </style>
