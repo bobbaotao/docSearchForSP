@@ -1,9 +1,30 @@
 <template>
   <div>
-    <el-table :data="resultData" stripe  :max-height="600" :width="900" :border=false>
-      <el-table-column label="Document" :width="250" :show-overflow-tooltip=true fixed>
+    <el-table :data="resultData" stripe  :max-height="500" :width="900" :border=false>
+      <el-table-column type="expand" fixed>
         <template scope="scope">
-          <a v-bind:href="'\\' + scope.row.FileRef" target="_blank">{{ scope.row.FileLeafRef }}</a>
+          <!-- <el-form label-position="left">
+            <el-form-item label="Document Description" align="left">
+              {{ scope.row.ZeissDocDes }}
+            </el-form-item>
+          </el-form> -->
+          <el-row>
+            <el-col :span="4" :offser="1">
+              Document Description:
+            </el-col>
+            <el-col :span="12">
+                {{ scope.row.ZeissDocDes }}
+            </el-col>
+          </el-row>
+        </template>
+      </el-table-column>
+      <el-table-column label="Document" :width="250" prop="FileLeafRef" :show-overflow-tooltip=true align="left" fixed>
+
+      </el-table-column>
+      <el-table-column :width="60" fixed>
+        <template scope="scope">
+          <a v-bind:href="'\\' + scope.row.FileRef" target="_blank"><img src="../assets/download_easyicon.png" /></a>
+
         </template>
       </el-table-column>
       <el-table-column label="Keywords" :width="200" prop="TaxKeywordTaxHTField"
@@ -104,4 +125,5 @@
 {
   margin-right: 5px;
 }
+
 </style>

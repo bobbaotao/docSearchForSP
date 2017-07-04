@@ -215,8 +215,8 @@
           projectDocTypeKeywords: "",
           csProjectDocTypeKeyowrds : "And",
           conditionOptions: [{value: "And"}, {value: "Or"}],
-          departmentOptions: [{value: "MED"},{value: "MIK"},{value: "IMT"},{value: "Strategy"},{value: "Others"}],
-          projectDocTypeOptions:[{value: "Startegy"},{value: "Financial Report"},{value: "Economic Report"},{value: "Marketing Report"},{value: "Others"}]
+          departmentOptions: [{value: "MED"},{value: "MIK"},{value: "IMT"},{value: "Vision"},{value: "SHIC"},{value: "CZFS"},{value: "CZIMT"},{value: "CZSZ"},{value: "Corporate"}],
+          projectDocTypeOptions:[{value: "Market research"},{value: "Strategic planning"},{value: "Financial Reporting & Analysis"},{value: "Articles & Reports"},{value: "Project documents"},{value: "Budgeting"}]
         }
       },
       methods: {
@@ -228,56 +228,56 @@
             //push search keywords to array
             if(this.titleKeywords != null && this.titleKeywords != "" && this.titleKeywords.trim() != "") {
               if(this.csTitleKeywords === 'Or') {
-                searchOrConditin.push("<Contains><FieldRef Name='Title' /><Value Type='Text'>" + this.titleKeywords.trim() +
-                  "</Value></Contains>");
+                searchOrConditin.push("<Contains><FieldRef Name='Title' /><Value Type='Text'><![CDATA[" + this.titleKeywords.trim() +
+                  "]]></Value></Contains>");
               } else {
-                searchConditions.push("<Contains><FieldRef Name='Title' /><Value Type='Text'>" + this.titleKeywords.trim() +
-                  "</Value></Contains>");
+                searchConditions.push("<Contains><FieldRef Name='Title' /><Value Type='Text'><![CDATA[" + this.titleKeywords.trim() +
+                  "]]></Value></Contains>");
               }
             }
             if(this.searchKeywords != null && this.searchKeywords != ""  && this.searchKeywords.trim() != "") {
               if(this.csSearchKeywords === 'Or') {
-                searchOrConditin.push("<Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'>" + this.searchKeywords.trim()
-                + "</Value></Contains>");
+                searchOrConditin.push("<Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'><![CDATA[" + this.searchKeywords.trim()
+                + "]]></Value></Contains>");
               } else {
-                searchConditions.push("<Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'>" + this.searchKeywords.trim()
-                + "</Value></Contains>");
+                searchConditions.push("<Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'><![CDATA[" + this.searchKeywords.trim()
+                + "]]></Value></Contains>");
               }
             }
             if(this.authorKeywords != null && this.authorKeywords != "" &&  this.authorKeywords.trim() != "") {
               if(this.csAuthorKeywords === 'Or') {
-                searchOrConditin.push("<Contains><FieldRef Name='Author' /><Value Type='User'>"
-                  + this.authorKeywords.trim() + "</Value></Contains>");
+                searchOrConditin.push("<Contains><FieldRef Name='Author' /><Value Type='User'><![CDATA["
+                  + this.authorKeywords.trim() + "]]></Value></Contains>");
               } else {
-                searchConditions.push("<Contains><FieldRef Name='Author' /><Value Type='User'>"
-                  + this.authorKeywords.trim() + "</Value></Contains>");
+                searchConditions.push("<Contains><FieldRef Name='Author' /><Value Type='User'><![CDATA["
+                  + this.authorKeywords.trim() + "]]></Value></Contains>");
               }
             }
             if(this.editorKeywords != null && this.editorKeywords != "" &&  this.editorKeywords.trim() != "") {
               if(this.csEditorKeywords === 'Or') {
-                searchOrConditin.push("<Contains><FieldRef Name='Editor' /><Value Type='User'>" +
-                  this.editorKeywords.trim() + "</Value></Contains>");
+                searchOrConditin.push("<Contains><FieldRef Name='Editor' /><Value Type='User'><![CDATA[" +
+                  this.editorKeywords.trim() + "]]></Value></Contains>");
               } else {
-                searchConditions.push("<Contains><FieldRef Name='Editor' /><Value Type='User'>" +
-                  this.editorKeywords.trim() + "</Value></Contains>");
+                searchConditions.push("<Contains><FieldRef Name='Editor' /><Value Type='User'><![CDATA[" +
+                  this.editorKeywords.trim() + "]]></Value></Contains>");
               }
             }
             if(this.projectNameKeywords != null && this.projectNameKeywords != "" &&  this.projectNameKeywords.trim() != "") {
               if(this.csProjectNameKeywords === 'Or') {
-                searchOrConditin.push("<Contains><FieldRef Name='ZeissProjectName' /><Value Type='Text'>" +
-                this.projectNameKeywords.trim() +"</Value></Contains>");
+                searchOrConditin.push("<Contains><FieldRef Name='ZeissProjectName' /><Value Type='Text'><![CDATA[" +
+                this.projectNameKeywords.trim() +"]]></Value></Contains>");
               } else {
-                searchConditions.push("<Contains><FieldRef Name='ZeissProjectName' /><Value Type='Text'>" +
-                this.projectNameKeywords.trim() +"</Value></Contains>");
+                searchConditions.push("<Contains><FieldRef Name='ZeissProjectName' /><Value Type='Text'><![CDATA[" +
+                this.projectNameKeywords.trim() +"]]></Value></Contains>");
               }
             }
             if(this.projectDescriptionKeywords != null && this.projectDescriptionKeywords != "" && this.projectDescriptionKeywords.trim() != "") {
               if(this.csProjectDesKeywords === 'Or') {
-                searchOrConditin.push("<Contains><FieldRef Name='ZeissDocDes' /><Value Type='Note'>" +
-                  this.projectDescriptionKeywords.trim() +"</Value></Contains>");
+                searchOrConditin.push("<Contains><FieldRef Name='ZeissDocDes' /><Value Type='Note'><![CDATA[" +
+                  this.projectDescriptionKeywords.trim() +"]]></Value></Contains>");
               } else {
-                searchConditions.push("<Contains><FieldRef Name='ZeissDocDes' /><Value Type='Note'>" +
-                  this.projectDescriptionKeywords.trim() +"</Value></Contains>");
+                searchConditions.push("<Contains><FieldRef Name='ZeissDocDes' /><Value Type='Note'><![CDATA[" +
+                  this.projectDescriptionKeywords.trim() +"]]></Value></Contains>");
               }
             }
             //department allows mutiple select
@@ -286,11 +286,11 @@
               for(var deprtmentKeyIndex = 0;  deprtmentKeyIndex < this.departmentKeywords.length; deprtmentKeyIndex++)
               {
                 if (deprtmentKeyIndex != 0) {
-                  strDepartmentQuery = "<Or>" + strDepartmentQuery + "<Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'>"
-                  + this.departmentKeywords[deprtmentKeyIndex] +"</Value></Eq></Or>";
+                  strDepartmentQuery = "<Or>" + strDepartmentQuery + "<Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'><![CDATA["
+                  + this.departmentKeywords[deprtmentKeyIndex] +"]]></Value></Eq></Or>";
                 } else {
-                  strDepartmentQuery = "<Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'>"
-                  + this.departmentKeywords[deprtmentKeyIndex] +"</Value></Eq>";
+                  strDepartmentQuery = "<Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'><![CDATA["
+                  + this.departmentKeywords[deprtmentKeyIndex] +"]]></Value></Eq>";
                 }
               }
               if(this.csDepartmentKeywords === 'Or') {
@@ -305,10 +305,10 @@
               var strProjectTypeQuery = "";
               for(var projectTypeIndex = 0; projectTypeIndex < this.projectDocTypeKeywords.length; projectTypeIndex++){
                 if(projectTypeIndex != 0) {
-                  strProjectTypeQuery = "<Or>" + strProjectTypeQuery + "<Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'>"
-                   + this.projectDocTypeKeywords[projectTypeIndex] + "</Value></Eq></Or>";
+                  strProjectTypeQuery = "<Or>" + strProjectTypeQuery + "<Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA["
+                   + this.projectDocTypeKeywords[projectTypeIndex] + "]]></Value></Eq></Or>";
                 } else {
-                  strProjectTypeQuery = "<Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'>" + this.projectDocTypeKeywords[projectTypeIndex] + "</Value></Eq>";
+                  strProjectTypeQuery = "<Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA[" + this.projectDocTypeKeywords[projectTypeIndex] + "]]></Value></Eq>";
                 }
               }
 

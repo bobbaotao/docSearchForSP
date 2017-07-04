@@ -5,6 +5,7 @@ import SearchPage from  '@/components/SearchPage'
 import SearchBox from '@/components/SearchBox'
 import AdvancedSearch from '@/components/AdvancedSearch'
 //import SearchResult from '@/components/SearchResult'
+//import LeftNavigation from '@/components/LeftNavigation'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
       path: '/SearchPage',
       name: 'SearchPage',
       component: SearchPage
-    }
+    }//,
+    // {
+    //   path: '/LeftNavigation',
+    //   name: 'LeftNavigation',
+    //   component: LeftNavigation
+    // }
   ]
 })

@@ -88,7 +88,7 @@
                       viewFields: "<FieldRef Name='FileLeafRef' /><FieldRef Name='FileRef' /><FieldRef Name='Created' />" +
                       "<FieldRef Name='File_x0020_Type' /><FieldRef Name='Editor' /><FieldRef Name='Modified' /><FieldRef Name='Author' />" +
                       "<FieldRef Name='TaxKeywordTaxHTField' /><FieldRef Name='File_x0020_Type' /><FieldRef Name='ZeissDepartmentOfDoc' />"
-                      + "<FieldRef Name='ZeissProjectName' /><FieldRef Name='ZeissProjectDocType' />",
+                      + "<FieldRef Name='ZeissProjectName' /><FieldRef Name='ZeissProjectDocType' /><FieldRef Name='ZeissDocDes' />",
                       webScope: "<Webs Scope='Recursive'>",
                       listScope: "<Lists ServerTemplate='10068' />",
                       rowLimit: "500"
