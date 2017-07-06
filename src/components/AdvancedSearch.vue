@@ -228,11 +228,13 @@
             //push search keywords to array
             if(this.titleKeywords != null && this.titleKeywords != "" && this.titleKeywords.trim() != "") {
               if(this.csTitleKeywords === 'Or') {
-                searchOrConditin.push("<Contains><FieldRef Name='Title' /><Value Type='Text'><![CDATA[" + this.titleKeywords.trim() +
-                  "]]></Value></Contains>");
+                searchOrConditin.push("<Or><Contains><FieldRef Name='Title' /><Value Type='Text'><![CDATA[" + this.titleKeywords.trim() +
+                  "]]></Value></Contains><Contains><FieldRef Name='FileLeafRef' /><Value Type='Text'><![CDATA[" + this.titleKeywords.trim() +
+                  "]]></Value></Contains></Or>");
               } else {
-                searchConditions.push("<Contains><FieldRef Name='Title' /><Value Type='Text'><![CDATA[" + this.titleKeywords.trim() +
-                  "]]></Value></Contains>");
+                searchConditions.push("<Or><Contains><FieldRef Name='Title' /><Value Type='Text'><![CDATA[" + this.titleKeywords.trim() +
+                  "]]></Value></Contains><Contains><FieldRef Name='FileLeafRef' /><Value Type='Text'><![CDATA[" + this.titleKeywords.trim() +
+                  "]]></Value></Contains></Or>");
               }
             }
             if(this.searchKeywords != null && this.searchKeywords != ""  && this.searchKeywords.trim() != "") {

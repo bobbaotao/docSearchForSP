@@ -97,12 +97,12 @@
       components: {LeftNavigation},
       methods: {
         search: function() {
-          var strquery = "<Where><Or><Or><Or><Or><Or><Contains><FieldRef Name='Title' /><Value Type='Text'><![CDATA[" + this.searchKeywords +
-            "</Value></Contains><Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'><![CDATA[" + this.searchKeywords
-             + "]]></Value></Contains></Or><Contains><FieldRef Name='FileLeafRef' /><Value Type='Text'><![CDATA[" + this.searchKeywords +
-             "]]></Value></Contains></Or><Contains><FieldRef Name='ZeissProjectName' /><Value Type='Text'><![CDATA[" + this.searchKeywords
-             + "]]></Value></Contains></Or><Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'><![CDATA[" + this.searchKeywords
-             + "]]></Value></Eq></Or> <Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA[" + this.searchKeywords +
+          var strquery = "<Where><Or><Or><Or><Or><Or><Contains><FieldRef Name='Title' /><Value Type='Text'><![CDATA[" + this.searchKeywords.trim() +
+            "]]></Value></Contains><Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'><![CDATA[" + this.searchKeywords.trim()
+             + "]]></Value></Contains></Or><Contains><FieldRef Name='FileLeafRef' /><Value Type='Text'><![CDATA[" + this.searchKeywords.trim() +
+             "]]></Value></Contains></Or><Contains><FieldRef Name='ZeissProjectName' /><Value Type='Text'><![CDATA[" + this.searchKeywords.trim()
+             + "]]></Value></Contains></Or><Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'><![CDATA[" + this.searchKeywords.trim()
+             + "]]></Value></Eq></Or> <Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA[" + this.searchKeywords.trim() +
              "]]></Value></Eq></Or></Where>";
 
           //this.$emit("dosearch", strquery);
@@ -115,7 +115,7 @@
           var strquery = "<Where><Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA["
             + docType + "]]></Value></Eq></Where>"
 
-            this.$router.push({name: 'SearchPage', params: {queryText: strquery}});
+            this.$router.push({name: 'SearchPage', params: {queryText: strquery, isGroup : true, groupKey: "ZeissProjectDocType"}});
         }
         //,
         // runSearchWhenEnter: function() {
@@ -164,12 +164,12 @@
 }
 .docTypeImg
 {
-  width: 100px;
-  height: 100px;
+  width: 64px;
 }
 .ImgLinkRow
 {
   margin-top: 40px;
+  margin-bottom: 25px;
 }
 .topLogo
 {

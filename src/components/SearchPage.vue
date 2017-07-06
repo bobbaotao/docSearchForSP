@@ -23,10 +23,16 @@
         </el-col>
     </el-row>
       <div class="searchResultContainer" v-if="isShowSearchResult">
-      <SearchResult v-bind:resultData="resultData" v-bind:dateFilter="srCreatedFilters" v-bind:departmentFilter="srDepartmentFilters"
+        <ResultByGroup v-if="isGroup" v-bind:sourceData="resultData" v-bind:dateFilter="srCreatedFilters"
+                    v-bind:authorFilter="srAuthorFilters" v-bind:tagFilter="srTagFilters" v-bind:groups="groups" v-bind:groupKey="groupKey"
+                    v-bind:modifiedDateFilter="srModifiedFilters" v-bind:editorFilter="srEditorFilters">
+
+        </ResultByGroup>
+        <SearchResult v-else v-bind:resultData="resultData" v-bind:dateFilter="srCreatedFilters" v-bind:departmentFilter="srDepartmentFilters"
                     v-bind:authorFilter="srAuthorFilters" v-bind:tagFilter="srTagFilters" v-bind:projectDoctypeFileter="srProjectDocTypeFilters"
                     v-bind:modifiedDateFilter="srModifiedFilters" v-bind:editorFilter="srEditorFilters">
-      </SearchResult>
+        </SearchResult>
+
     </div>
   </div>
 </template>
@@ -34,6 +40,7 @@
 <script>
       import Spinner from 'vue-simple-spinner';
       import SearchResult from './SearchResult';
+      import ResultByGroup from './ResultByGroup';
       import SearchBox from './SearchBox';
       var JSON2 = require('JSON2');
       var array = require('array')
@@ -56,17 +63,24 @@
                   srDepartmentFilters: [],
                   srProjectDocTypeFilters: [],
                   srModifiedFilters: [],
-                  srEditorFilters: []
+                  srEditorFilters: [],
+                  isGroup: false,
+                  groupKey: "",
+                  groups:[]
                 }
             },
             created: function() {
               if(this.$route.params && this.$route.params.queryText) {
+                if(this.$route.params.isGroup) {
+                  this.isGroup = this.$route.params.isGroup;
+                  this.groupKey = this.$route.params.groupKey;
+                }
                 this.SearchDataFromSP(this.$route.params.queryText);
               } else {
                 this.message ="no avaliable search keywords";
               }
             },
-            components: { Spinner, SearchResult, SearchBox },
+            components: { Spinner, SearchResult, ResultByGroup },
             methods: {
                 SearchDoc: function(){
                   this.isShowSearchBox = false;
@@ -106,6 +120,7 @@
                       var projectDoctypeFileter = new array();
                       var modifiedDateFilter = new array();
                       var editorFilter = new array();
+                      var groups = new array();
 
                       for(var i=0; i< resultRows.length; i++) {
                         var item = resultRows[i];
@@ -138,6 +153,7 @@
                           item._FileIcon = "../../../_layouts/15/images/mb_file.png";
                         }
 
+                        // deal with tag
                         if(item.TaxKeywordTaxHTField != null) {
                           if(item.TaxKeywordTaxHTField.indexOf(";") > 0 ) {
                             var keywords = item.TaxKeywordTaxHTField.split(";");
@@ -178,16 +194,38 @@
                           projectDoctypeFileter.push({text: "", value: ""});
                         }
                       }
-
                       //set filters
                       this.srCreatedFilters = dateFilter.unique("value").toArray();
                       this.srAuthorFilters = authorFilter.unique("value").toArray();
                       this.srTagFilters = tagFilter.unique("value").toArray();
-                      this.srDepartmentFilters = departmentFilter.unique("value").toArray();
-                      this.srProjectDocTypeFilters = projectDoctypeFileter.unique("value").toArray();
+                      var uniqueDepartment = departmentFilter.unique("value").toArray();
+                      var uniqueProjectDocType = projectDoctypeFileter.unique("value").toArray();
+                      this.srDepartmentFilters = uniqueDepartment;
+                      this.srProjectDocTypeFilters = uniqueProjectDocType;
                       this.srModifiedFilters = modifiedDateFilter.unique("value").toArray();
                       this.srEditorFilters = editorFilter.unique("value").toArray();
 
+                      //count group info
+                      if(this.groupKey === "ZeissDepartmentOfDoc") {
+                        for(var uIndex = 0; uIndex < uniqueDepartment.length; uIndex++) {
+                          var curDepText = uniqueDepartment[uIndex].value;
+                          var count = departmentFilter.count(function(dpFilterItem) {
+                            return dpFilterItem.text == curDepText;
+                          });
+                          groups.push({isSelect: true, key: uniqueDepartment[uIndex].value,
+                            num: count});
+                        }
+                      } else if(this.groupKey === "ZeissProjectDocType") {
+                        for(var singleFilter in uniqueProjectDocType) {
+                          var curPDTText = uniqueProjectDocType[singleFilter].value;
+                          var count = projectDoctypeFileter.count(function(projectdocitem) {
+                              return projectdocitem.text === curPDTText
+                          });
+                          groups.push({isSelect: true, key: curPDTText,num: count});
+                        }
+                      }
+
+                      this.groups = groups.toArray();
                       this.resultData = resultRows;
                       this.isShowSearchResult = true;
                       this.isShowSearchBox = false;

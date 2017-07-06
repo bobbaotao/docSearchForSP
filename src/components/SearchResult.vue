@@ -64,13 +64,13 @@
           <span style="margin-left: 10px">{{ scope.row.Created.substring(0, 10) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Editor" :width="160"  sortable prop="Author"  :show-overflow-tooltip=true
+      <el-table-column label="Editor" :width="160"  sortable prop="Editor"  :show-overflow-tooltip=true
             :filters="editorFilter" :filter-method="filterEditor" filter-placement="top">
         <template scope="scope">
           {{scope.row.Editor}}
         </template>
       </el-table-column>
-      <el-table-column label="Modified Date" :width="180" sortable prop="Created"
+      <el-table-column label="Modified Date" :width="180" sortable prop="Modified"
           :filters="modifiedDateFilter" :filter-method="filterModifiedDate" filter-placement="top">
         <template scope="scope">
           <el-icon name="time"></el-icon>

@@ -38,7 +38,7 @@ export default {
           var strquery = "<Where><Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'>"
             + data.keywords + "</Value></Eq></Where>";
 
-          this.$router.push({name: 'SearchPage', params: {queryText: strquery}});
+          this.$router.push({name: 'SearchPage', params: {queryText: strquery, isGroup : true, groupKey: "ZeissDepartmentOfDoc"}});
         }
       }
     }

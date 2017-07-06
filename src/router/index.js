@@ -6,6 +6,7 @@ import SearchBox from '@/components/SearchBox'
 import AdvancedSearch from '@/components/AdvancedSearch'
 //import SearchResult from '@/components/SearchResult'
 //import LeftNavigation from '@/components/LeftNavigation'
+import ResultByGroup from '@/components/ResultByGroup'
 
 Vue.use(Router)
 
@@ -31,5 +32,11 @@ export default new Router({
     //   name: 'LeftNavigation',
     //   component: LeftNavigation
     // }
+    ,
+    {
+      path: '/ResultByGroup',
+      name: 'ResultByGroup',
+      component: ResultByGroup
+    }
   ]
 })
