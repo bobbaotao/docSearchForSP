@@ -164,6 +164,21 @@
           </el-select>
         </el-col>
       </el-row>
+      <el-row :gutter="5" class="bigRow">
+        <el-col :span="3" class="keywordTitle">
+          Vendor:
+        </el-col>
+        <el-col :span="2">
+          <el-select v-model="csVendorKeywords">
+            <el-option v-for="item in conditionOptions" :key="item.value" :label="item.value" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="7">
+          <el-input placeholder="Vendor" v-model="vendorKeywords">
+          </el-input>
+        </el-col>
+      </el-row>
       <el-row  :gutter="5" class="bigRow btnRow">
 
         <el-col :span="4" :offset="8">
@@ -214,6 +229,8 @@
           csProjectNameKeywords: "And",
           projectDocTypeKeywords: "",
           csProjectDocTypeKeyowrds : "And",
+          vendorKeywords: "",
+          csVendorKeywords: "And",
           conditionOptions: [{value: "And"}, {value: "Or"}],
           departmentOptions: [{value: "MED"},{value: "MIK"},{value: "IMT"},{value: "Vision"},{value: "SHIC"},{value: "CZFS"},{value: "CZIMT"},{value: "CZSZ"},{value: "Corporate"}],
           projectDocTypeOptions:[{value: "Market research"},{value: "Strategic planning"},{value: "Financial Reporting & Analysis"},{value: "Articles & Reports"},{value: "Project documents"},{value: "Budgeting"}]
@@ -243,6 +260,15 @@
                 + "]]></Value></Contains>");
               } else {
                 searchConditions.push("<Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'><![CDATA[" + this.searchKeywords.trim()
+                + "]]></Value></Contains>");
+              }
+            }
+            if(this.vendorKeywords != null && this.vendorKeywords != ""  && this.vendorKeywords.trim() != "") {
+              if(this.csSearchKeywords === 'Or') {
+                searchOrConditin.push("<Contains><FieldRef Name='ZeissVendor' /><Value Type='Text'><![CDATA[" + this.vendorKeywords.trim()
+                + "]]></Value></Contains>");
+              } else {
+                searchConditions.push("<Contains><FieldRef Name='ZeissVendor' /><Value Type='Text'><![CDATA[" + this.vendorKeywords.trim()
                 + "]]></Value></Contains>");
               }
             }
@@ -418,6 +444,7 @@
           this.departmentKeywords = "";
           this.projectNameKeywords = "";
           this.projectDocTypeKeywords = "";
+          this.vendorKeywords = "";
           this.message = "";
         },
         backToSearch: function() {

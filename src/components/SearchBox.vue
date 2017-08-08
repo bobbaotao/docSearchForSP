@@ -115,7 +115,7 @@
           var strquery = "<Where><Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA["
             + docType + "]]></Value></Eq></Where>"
 
-            this.$router.push({name: 'SearchPage', params: {queryText: strquery, isGroup : true, groupKey: "ZeissProjectDocType"}});
+            this.$router.push({name: 'SearchPage', params: {queryText: strquery, isGroup : true, groupKey: "ZeissDepartmentOfDoc"}});
         }
         //,
         // runSearchWhenEnter: function() {

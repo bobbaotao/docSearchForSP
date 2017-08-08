@@ -1,84 +1,81 @@
 <template>
-  <div>
-    <el-table :data="resultData" stripe  :max-height="500" :width="900" :border=false>
-      <el-table-column type="expand" fixed>
-        <template scope="scope">
-          <!-- <el-form label-position="left">
-            <el-form-item label="Document Description" align="left">
-              {{ scope.row.ZeissDocDes }}
-            </el-form-item>
-          </el-form> -->
-          <el-row>
-            <el-col :span="4" :offser="1">
-              Document Description:
-            </el-col>
-            <el-col :span="12">
-                {{ scope.row.ZeissDocDes }}
-            </el-col>
-          </el-row>
-        </template>
-      </el-table-column>
-      <el-table-column label="Document" :width="250" prop="FileLeafRef" :show-overflow-tooltip=true align="left" fixed>
+  <el-row :gutter="10" class="bigRow">
+    <el-col :span="22" :offset="1">
+      <el-table :data="resultData" stripe :max-height="500"  :border=false>
 
-      </el-table-column>
-      <el-table-column :width="60" fixed>
-        <template scope="scope">
-          <a v-bind:href="'\\' + scope.row.FileRef" target="_blank"><img src="../assets/download_easyicon.png" /></a>
-
-        </template>
-      </el-table-column>
-      <el-table-column label="Keywords" :width="200" prop="TaxKeywordTaxHTField"
-            :filters="tagFilter" :filter-method="filterTag" filter-placement="top">
-        <template scope="scope">
-          <el-tag class="sr-el-tag"  v-for="tagText in scope.row.TaxKeywordTaxHTField">{{tagText}}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="Department" :width="160" prop="ZeissDepartmentOfDoc"
-          sortable :filters="departmentFilter" :filter-method="filterDepartment" filter-placement="top">
-        <template scope="scope">
-          {{scope.row.ZeissDepartmentOfDoc}}
-        </template>
-      </el-table-column>
-      <el-table-column label="Project Name" width="200" prop="ZeissProjectName"
-          sortable :show-overflow-tooltip=true>
-        <template scope="scope">
-          {{scope.row.ZeissProjectName}}
-        </template>
-      </el-table-column>
-      <el-table-column label="Type" :width="160" prop="ZeissProjectDocType"
-          sortable :filters="projectDoctypeFileter" :filter-method="filterProjectDocType" filter-placement="top">
-        <template scope="scope">
-          {{scope.row.ZeissProjectDocType}}
-        </template>
-      </el-table-column>
-      <el-table-column label="Author" :width="160"  sortable prop="Author"  :show-overflow-tooltip=true
-            :filters="authorFilter" :filter-method="filterAuthor" filter-placement="top">
-        <template scope="scope">
-          {{scope.row.Author}}
-        </template>
-      </el-table-column>
-      <el-table-column label="Created Date" :width="180" sortable prop="Created"
-          :filters="dateFilter" :filter-method="filterCreateDate" filter-placement="top">
-        <template scope="scope">
-          <el-icon name="time"></el-icon>
-          <span style="margin-left: 10px">{{ scope.row.Created.substring(0, 10) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Editor" :width="160"  sortable prop="Editor"  :show-overflow-tooltip=true
-            :filters="editorFilter" :filter-method="filterEditor" filter-placement="top">
-        <template scope="scope">
-          {{scope.row.Editor}}
-        </template>
-      </el-table-column>
-      <el-table-column label="Modified Date" :width="180" sortable prop="Modified"
-          :filters="modifiedDateFilter" :filter-method="filterModifiedDate" filter-placement="top">
-        <template scope="scope">
-          <el-icon name="time"></el-icon>
-          <span style="margin-left: 10px">{{ scope.row.Modified.substring(0, 10) }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
-  </div>
+        <el-table-column label="Document" :width="350" prop="FileLeafRef" align="left" fixed>
+          <template scope="scope">
+            <el-tooltip placement="bottom" effect="dark" >
+              <div class="colfontsize" slot="content">{{scope.row.ZeissDocDes == ""? "no description": scope.row.ZeissDocDes}}</div>
+              <div class="colfontsize">{{scope.row.FileLeafRef}}</div>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+        <el-table-column :width="50" fixed>
+          <template scope="scope">
+            <a v-bind:href="'../../../_layouts/15/download.aspx?SourceUrl=/' + scope.row.FileRef" target="_blank"><img style="padding-top:5px" src="../assets/download_easyicon.png" /></a>
+          </template>
+        </el-table-column>
+        <el-table-column label="Keywords" :width="200" prop="TaxKeywordTaxHTField"
+              :filters="tagFilter" :filter-method="filterTag" filter-placement="top">
+          <template scope="scope">
+            <el-tag class="sr-el-tag colfontsize"  v-for="tagText in scope.row.TaxKeywordTaxHTField">{{tagText}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="Department" :width="160" prop="ZeissDepartmentOfDoc"
+            sortable :filters="departmentFilter" :filter-method="filterDepartment" filter-placement="top">
+          <template scope="scope">
+            <div class="colfontsize">{{scope.row.ZeissDepartmentOfDoc}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Project Name" width="200" prop="ZeissProjectName"
+            sortable :show-overflow-tooltip=true>
+          <template scope="scope">
+            <div class="colfontsize">{{scope.row.ZeissProjectName}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Vendor" width="200" prop="ZeissVendor"
+            sortable :show-overflow-tooltip=true>
+          <template scope="scope">
+            <div class="colfontsize">{{scope.row.ZeissVendor}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Type" :width="160" prop="ZeissProjectDocType"
+            sortable :filters="projectDoctypeFileter" :filter-method="filterProjectDocType" filter-placement="top">
+          <template scope="scope">
+            <div class="colfontsize">{{scope.row.ZeissProjectDocType}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Author" :width="160"  sortable prop="Author"  :show-overflow-tooltip=true
+              :filters="authorFilter" :filter-method="filterAuthor" filter-placement="top">
+          <template scope="scope">
+            <div class="colfontsize">{{scope.row.Author}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Created Date" :width="180"  sortable prop="Created"
+            :filters="dateFilter" :filter-method="filterCreateDate" filter-placement="top">
+          <template scope="scope">
+            <el-icon name="time"></el-icon>
+            <span style="margin-left: 10px" class="colfontsize">{{ scope.row.Created.substring(0, 10) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Editor" :width="160" sortable prop="Editor"  :show-overflow-tooltip=true
+              :filters="editorFilter" :filter-method="filterEditor" filter-placement="top">
+          <template scope="scope">
+            <div class="colfontsize">{{scope.row.Editor}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Modified Date" :width="180" sortable prop="Modified"
+            :filters="modifiedDateFilter" :filter-method="filterModifiedDate" filter-placement="top">
+          <template scope="scope">
+            <el-icon name="time"></el-icon>
+            <span style="margin-left: 10px"  class="colfontsize">{{ scope.row.Modified.substring(0, 10) }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -125,5 +122,8 @@
 {
   margin-right: 5px;
 }
-
+.colfontsize
+{
+  font-size: 12px;
+}
 </style>

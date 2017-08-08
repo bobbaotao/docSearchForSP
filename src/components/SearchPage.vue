@@ -12,13 +12,13 @@
         {{message}}
       </div>
     </div> -->
-    <el-row :gutter="10" class="bigRow">
-      <el-col :span="9" :offset="1">
+    <el-row :gutter="10" class="bigRow srcontainer">
+      <el-col :span="22" :offset="1">
         <A class="el-icon-d-arrow-left" style="float: left;" v-on:click="backToSearch" >&nbsp;Back to Search</A>
       </el-col>
     </el-row>
     <el-row>
-        <el-col :span="9" :offset="1">
+        <el-col :span="22" :offset="1">
           {{message}}
         </el-col>
     </el-row>
@@ -102,7 +102,7 @@
                       viewFields: "<FieldRef Name='FileLeafRef' /><FieldRef Name='FileRef' /><FieldRef Name='Created' />" +
                       "<FieldRef Name='File_x0020_Type' /><FieldRef Name='Editor' /><FieldRef Name='Modified' /><FieldRef Name='Author' />" +
                       "<FieldRef Name='TaxKeywordTaxHTField' /><FieldRef Name='File_x0020_Type' /><FieldRef Name='ZeissDepartmentOfDoc' />"
-                      + "<FieldRef Name='ZeissProjectName' /><FieldRef Name='ZeissProjectDocType' /><FieldRef Name='ZeissDocDes' />",
+                      + "<FieldRef Name='ZeissProjectName' /><FieldRef Name='ZeissProjectDocType' /><FieldRef Name='ZeissDocDes' /><FieldRef Name='ZeissVendor' />",
                       webScope: "<Webs Scope='Recursive'>",
                       listScope: "<Lists ServerTemplate='10068' />",
                       rowLimit: "500"
@@ -277,6 +277,10 @@
   margin-top: 200px;
 }
 .searchResultContainer
+{
+  padding-top: 15px;
+}
+.srcontainer
 {
   padding-top: 15px;
 }

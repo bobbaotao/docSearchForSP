@@ -1,42 +1,31 @@
 <template>
   <el-row :gutter="10" class="bigRow">
     <el-col :span="5" :offset="1">
-      <div class="groupitem" v-bind:class="{groupitem_selected : group.isSelect}" v-for="group in groups" v-on:click="group.isSelect = !group.isSelect; filterByKey()">
-        <i v-if="group.isSelect" class="el-icon-caret-bottom"></i><i v-else class="el-icon-caret-right"></i>&nbsp;&nbsp;{{group.key}}&nbsp;({{group.num}})
+      <div class="groupitem" v-bind:class="{groupitem_selected : group.isSelect}" v-for="group in groups" >
+        <!-- <i v-if="group.isSelect" class="el-icon-caret-bottom"></i>
+        <i v-else class="el-icon-caret-right"></i>&nbsp;&nbsp;{{group.key}}&nbsp;({{group.num}}) -->
+        <el-checkbox v-on:change="filterByKey()" v-model="group.isSelect">{{group.key}}&nbsp;({{group.num}})</el-checkbox>
       </div>
     </el-col>
     <el-col :span="17">
-      <el-table :data="resultData" stripe  :max-height="500" :width="900" :border=false>
-        <el-table-column type="expand" fixed>
-          <template scope="scope">
-            <!-- <el-form label-position="left">
-              <el-form-item label="Document Description" align="left">
-                {{ scope.row.ZeissDocDes }}
-              </el-form-item>
-            </el-form> -->
-            <el-row>
-              <el-col :span="4" :offser="1">
-                Document Description:
-              </el-col>
-              <el-col :span="12">
-                  {{ scope.row.ZeissDocDes }}
-              </el-col>
-            </el-row>
-          </template>
+      <el-table :data="resultData" stripe  :max-height="500" :border=false>
+        <el-table-column label="Document" :width="350" prop="FileLeafRef" align="left" fixed>
+            <template scope="scope">
+              <el-tooltip placement="bottom" effect="dark">
+                <div class="colfontsize" slot="content">{{scope.row.ZeissDocDes == ""? "no description": scope.row.ZeissDocDes}}</div>
+                <div class="colfontsize" >{{scope.row.FileLeafRef}}</div>
+              </el-tooltip>
+            </template>
         </el-table-column>
-        <el-table-column label="Document" :width="250" prop="FileLeafRef" :show-overflow-tooltip=true align="left" fixed>
-
-        </el-table-column>
-        <el-table-column :width="60" fixed>
+        <el-table-column :width="50" fixed>
           <template scope="scope">
-            <a v-bind:href="'\\' + scope.row.FileRef" target="_blank"><img src="../assets/download_easyicon.png" /></a>
-
+            <a class="colfontsize" v-bind:href="'../../../_layouts/15/download.aspx?SourceUrl=/' + scope.row.FileRef" target="_blank"><img style="padding-top:5px;" src="../assets/download_easyicon.png" /></a>
           </template>
         </el-table-column>
         <el-table-column label="Keywords" :width="200" prop="TaxKeywordTaxHTField"
               :filters="tagFilter" :filter-method="filterTag" filter-placement="top">
           <template scope="scope">
-            <el-tag class="sr-el-tag"  v-for="tagText in scope.row.TaxKeywordTaxHTField">{{tagText}}</el-tag>
+            <el-tag class="sr-el-tag colfontsize"  v-for="tagText in scope.row.TaxKeywordTaxHTField">{{tagText}}</el-tag>
           </template>
         </el-table-column>
         <!-- <el-table-column label="Department" :width="160" prop="ZeissDepartmentOfDoc"
@@ -48,7 +37,13 @@
         <el-table-column label="Project Name" width="200" prop="ZeissProjectName"
             sortable :show-overflow-tooltip=true>
           <template scope="scope">
-            {{scope.row.ZeissProjectName}}
+            <div  class="colfontsize" >{{scope.row.ZeissProjectName}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Vendor" width="200" prop="ZeissVendor"
+            sortable :show-overflow-tooltip=true>
+          <template scope="scope">
+            <div  class="colfontsize" >{{scope.row.ZeissVendor}}</div>
           </template>
         </el-table-column>
         <!-- <el-table-column label="Type" :width="160" prop="ZeissProjectDocType"
@@ -60,27 +55,27 @@
         <el-table-column label="Author" :width="160"  sortable prop="Author"  :show-overflow-tooltip=true
               :filters="authorFilter" :filter-method="filterAuthor" filter-placement="top">
           <template scope="scope">
-            {{scope.row.Author}}
+            <div  class="colfontsize">{{scope.row.Author}}</div>
           </template>
         </el-table-column>
         <el-table-column label="Created Date" :width="180" sortable prop="Created"
             :filters="dateFilter" :filter-method="filterCreateDate" filter-placement="top">
           <template scope="scope">
             <el-icon name="time"></el-icon>
-            <span style="margin-left: 10px">{{ scope.row.Created.substring(0, 10) }}</span>
+            <span style="margin-left: 10px"  class="colfontsize" >{{ scope.row.Created.substring(0, 10) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="Editor" :width="160"  sortable prop="Editor"  :show-overflow-tooltip=true
               :filters="editorFilter" :filter-method="filterEditor" filter-placement="top">
           <template scope="scope">
-            {{scope.row.Editor}}
+            <div class="colfontsize" >{{scope.row.Editor}}</div>
           </template>
         </el-table-column>
         <el-table-column label="Modified Date" :width="180" sortable prop="Modified"
             :filters="modifiedDateFilter" :filter-method="filterModifiedDate" filter-placement="top">
           <template scope="scope">
             <el-icon name="time"></el-icon>
-            <span style="margin-left: 10px">{{ scope.row.Modified.substring(0, 10) }}</span>
+            <span style="margin-left: 10px" class="colfontsize" >{{ scope.row.Modified.substring(0, 10) }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -174,5 +169,9 @@ export default {
 .groupitem_hover
 {
   background-color: #99A9BF;
+}
+.colfontsize
+{
+  font-size: 12px;
 }
 </style>
