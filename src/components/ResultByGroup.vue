@@ -8,18 +8,29 @@
       </div>
     </el-col>
     <el-col :span="17">
-      <el-table :data="resultData" stripe  :max-height="500" :border=false>
-        <el-table-column label="Document" :width="350" prop="FileLeafRef" align="left" fixed>
+      <el-table :data="resultData" stripe  :max-height="tbHeight" :border=false>
+        <el-table-column :width="50" fixed>
+          <template scope="scope">
+            <img style="padding-top:5px" v-bind:src="scope.row._FileIcon" />
+          </template>
+        </el-table-column>
+        <el-table-column label="Document" :width="250" prop="FileLeafRef" align="left" fixed>
             <template scope="scope">
-              <el-tooltip placement="bottom" effect="dark">
+              <!-- <el-tooltip placement="bottom" effect="dark">
                 <div class="colfontsize" slot="content">{{scope.row.ZeissDocDes == ""? "no description": scope.row.ZeissDocDes}}</div>
-                <div class="colfontsize" >{{scope.row.FileLeafRef}}</div>
-              </el-tooltip>
+                <div class="colfontsize" >{{scope.row.Title}}</div>
+              </el-tooltip> -->
+              <div class="colfontsize" >{{scope.row.Title}}</div>
             </template>
         </el-table-column>
         <el-table-column :width="50" fixed>
           <template scope="scope">
             <a class="colfontsize" v-bind:href="'../../../_layouts/15/download.aspx?SourceUrl=/' + scope.row.FileRef" target="_blank"><img style="padding-top:5px;" src="../assets/download_easyicon.png" /></a>
+          </template>
+        </el-table-column>
+        <el-table-column label="Description" :width="250">
+          <template scope="scope">
+            <div  class="colfontsize" >{{scope.row.ZeissDocDes}}</div>
           </template>
         </el-table-column>
         <el-table-column label="Keywords" :width="200" prop="TaxKeywordTaxHTField"
@@ -34,14 +45,14 @@
             {{scope.row.ZeissDepartmentOfDoc}}
           </template>
         </el-table-column> -->
-        <el-table-column label="Project Name" width="200" prop="ZeissProjectName"
-            sortable :show-overflow-tooltip=true>
+        <el-table-column label="Project Name" width="200" prop="ZeissProjectName" :filters="projectNameFilter"
+            sortable :filter-method="filterProjectName" filter-placement="top" :show-overflow-tooltip=true>
           <template scope="scope">
             <div  class="colfontsize" >{{scope.row.ZeissProjectName}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="Vendor" width="200" prop="ZeissVendor"
-            sortable :show-overflow-tooltip=true>
+        <el-table-column label="Vendor" width="200" prop="ZeissVendor" :filters="vendorFilter" filter-placement="top"
+            sortable :filter-method="filterVendor" :show-overflow-tooltip=true>
           <template scope="scope">
             <div  class="colfontsize" >{{scope.row.ZeissVendor}}</div>
           </template>
@@ -88,7 +99,8 @@ var array = require('array');
 
 export default {
   name: "ResultByGroup",
-  props: ["sourceData","groups","groupKey","dateFilter","authorFilter","modifiedDateFilter","editorFilter","tagFilter"],
+  props: ["sourceData","groups","groupKey","dateFilter","authorFilter","modifiedDateFilter",
+  "editorFilter","tagFilter", "projectNameFilter", "vendorFilter", "tbHeight"],
   data () {
     return {
       resultData: this.sourceData
@@ -146,6 +158,20 @@ export default {
       }
 
       this.resultData = newSources.toArray();
+    },
+    filterProjectName(value, row) {
+      if(value != "") {
+        return row.ZeissProjectName === value;
+      } else {
+        return row.ZeissProjectName == null || row.ZeissProjectName == "";
+      }
+    },
+    filterVendor(value,row) {
+      if(value != "") {
+        return row.ZeissVendor === value;
+      } else {
+        return row.ZeissVendor == null || row.ZeissVendor == "";
+      }
     }
   }
 
@@ -173,5 +199,7 @@ export default {
 .colfontsize
 {
   font-size: 12px;
+  word-break: normal;
+  text-align: left;
 }
 </style>

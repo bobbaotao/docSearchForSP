@@ -23,14 +23,16 @@
         </el-col>
     </el-row>
       <div class="searchResultContainer" v-if="isShowSearchResult">
-        <ResultByGroup v-if="isGroup" v-bind:sourceData="resultData" v-bind:dateFilter="srCreatedFilters"
+        <ResultByGroup v-if="isGroup" v-bind:sourceData="resultData" v-bind:dateFilter="srCreatedFilters" :tbHeight="tbHeight"
                     v-bind:authorFilter="srAuthorFilters" v-bind:tagFilter="srTagFilters" v-bind:groups="groups" v-bind:groupKey="groupKey"
-                    v-bind:modifiedDateFilter="srModifiedFilters" v-bind:editorFilter="srEditorFilters">
+                    v-bind:modifiedDateFilter="srModifiedFilters" v-bind:editorFilter="srEditorFilters"
+                    v-bind:projectNameFilter="srProjectNameFilters" v-bind:vendorFilter="srVendorFilters">
 
         </ResultByGroup>
         <SearchResult v-else v-bind:resultData="resultData" v-bind:dateFilter="srCreatedFilters" v-bind:departmentFilter="srDepartmentFilters"
                     v-bind:authorFilter="srAuthorFilters" v-bind:tagFilter="srTagFilters" v-bind:projectDoctypeFileter="srProjectDocTypeFilters"
-                    v-bind:modifiedDateFilter="srModifiedFilters" v-bind:editorFilter="srEditorFilters">
+                    v-bind:modifiedDateFilter="srModifiedFilters" v-bind:editorFilter="srEditorFilters"  :tbHeight="tbHeight"
+                    v-bind:projectNameFilter="srProjectNameFilters" v-bind:vendorFilter="srVendorFilters">
         </SearchResult>
 
     </div>
@@ -43,11 +45,15 @@
       import ResultByGroup from './ResultByGroup';
       import SearchBox from './SearchBox';
       var JSON2 = require('JSON2');
-      var array = require('array')
+      var array = require('array');
 
       export default {
             name: 'SearchPage',
             data() {
+                var size = {
+                  width: window.innerWidth || document.body.clientWidth,
+                  height: window.innerHeight || document.body.clientHeight
+                };
                 return {
                   isLoading : false,
                   isShowSearchBox : true,
@@ -64,10 +70,18 @@
                   srProjectDocTypeFilters: [],
                   srModifiedFilters: [],
                   srEditorFilters: [],
+                  srProjectNameFilters: [],
+                  srVendorFilters: [],
                   isGroup: false,
                   groupKey: "",
-                  groups:[]
+                  groups:[],
+                  size
                 }
+            },
+            computed: {
+              tbHeight: function() {
+                return this.size.height - 100;
+              }
             },
             created: function() {
               if(this.$route.params && this.$route.params.queryText) {
@@ -99,7 +113,7 @@
                   var requestData = {
                     param : {
                       query: strQuery,
-                      viewFields: "<FieldRef Name='FileLeafRef' /><FieldRef Name='FileRef' /><FieldRef Name='Created' />" +
+                      viewFields: "<FieldRef Name='FileLeafRef' /><FieldRef Name='FileRef' /><FieldRef Name='Title' /><FieldRef Name='Created' />" +
                       "<FieldRef Name='File_x0020_Type' /><FieldRef Name='Editor' /><FieldRef Name='Modified' /><FieldRef Name='Author' />" +
                       "<FieldRef Name='TaxKeywordTaxHTField' /><FieldRef Name='File_x0020_Type' /><FieldRef Name='ZeissDepartmentOfDoc' />"
                       + "<FieldRef Name='ZeissProjectName' /><FieldRef Name='ZeissProjectDocType' /><FieldRef Name='ZeissDocDes' /><FieldRef Name='ZeissVendor' />",
@@ -121,6 +135,8 @@
                       var modifiedDateFilter = new array();
                       var editorFilter = new array();
                       var groups = new array();
+                      var projectNameFilter = new array();
+                      var vendorFilter = new array();
 
                       for(var i=0; i< resultRows.length; i++) {
                         var item = resultRows[i];
@@ -143,12 +159,14 @@
                         //init doc icon
                         if(item.File_x0020_Type == null || item.File_x0020_Type == "") {
                           item._FileIcon = "../../../_layouts/15/images/folder.gif";
-                        } else if(item.File_x0020_Type == "docx") {
+                        } else if(item.File_x0020_Type == "docx" || item.File_x0020_Type == "doc") {
                           item._FileIcon = "../../../_layouts/15/images/icdocx.png";
                         } else if (item.File_x0020_Type == "xlsx" || item.File_x0020_Type == "csv") {
                           item._FileIcon = "../../../_layouts/15/images/icxlsx.png";
-                        } else if (item.File_x0020_Type == "pptx") {
+                        } else if (item.File_x0020_Type == "pptx" || item.File_x0020_Type == "ppt") {
                           item._FileIcon = "../../../_layouts/15/images/icpptx.png";
+                        } else if (item.File_x0020_Type == "pdf") {
+                          item._FileIcon = "../../../_layouts/15/images/icpdf.png";
                         } else {
                           item._FileIcon = "../../../_layouts/15/images/mb_file.png";
                         }
@@ -182,6 +200,20 @@
                         authorFilter.push({text: item.Author, value: item.Author});
                         editorFilter.push({text: item.Editor, value: item.Editor});
 
+                        if(item.ZeissProjectName != null && item.ZeissProjectName != '')
+                        {
+                          projectNameFilter.push({text: item.ZeissProjectName, value: item.ZeissProjectName});
+                        } else {
+                          projectNameFilter.push({text: "", value: ""});
+                        }
+
+                        if(item.ZeissVendor != null && item.ZeissVendor != '')
+                        {
+                          vendorFilter.push({text: item.ZeissVendor, value: item.ZeissVendor});
+                        } else {
+                          vendorFilter.push({text: "", value: ""});
+                        }
+
                         if(item.ZeissDepartmentOfDoc != null && item.ZeissDepartmentOfDoc != "") {
                           departmentFilter.push({text: item.ZeissDepartmentOfDoc, value: item.ZeissDepartmentOfDoc});
                         } else {
@@ -204,6 +236,8 @@
                       this.srProjectDocTypeFilters = uniqueProjectDocType;
                       this.srModifiedFilters = modifiedDateFilter.unique("value").toArray();
                       this.srEditorFilters = editorFilter.unique("value").toArray();
+                      this.srProjectNameFilters = projectNameFilter.unique("value").toArray();
+                      this.srVendorFilters = vendorFilter.unique("value").toArray();
 
                       //count group info
                       if(this.groupKey === "ZeissDepartmentOfDoc") {
