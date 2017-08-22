@@ -31,12 +31,12 @@ export default {
         if(data.LinkType === "RecentDoc") {
           var dateParam = moment().add(-1, "week").format("YYYY-MM-DD");
           var strquery = "<Where><Geq><FieldRef Name='Created' /><Value IncludeTimeValue='FALSE' Type='DateTime'>"
-            + dateParam + "</Value></Geq></Where>";
+            + dateParam + "</Value></Geq></Where><OrderBy><FieldRef Name='Created' Ascending='False' /></OrderBy>";
 
           this.$router.push({name: 'SearchPage', params: {queryText: strquery}});
         } else if (data.LinkType === "Department") {
           var strquery = "<Where><Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'>"
-            + data.keywords + "</Value></Eq></Where>";
+            + data.keywords + "</Value></Eq></Where><OrderBy><FieldRef Name='Created' Ascending='False' /></OrderBy>";
 
           this.$router.push({name: 'SearchPage', params: {queryText: strquery, isGroup : true, groupKey: "ZeissProjectDocType"}});
         }

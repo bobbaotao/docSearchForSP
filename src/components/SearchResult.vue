@@ -26,6 +26,12 @@
             <div  class="colfontsize" >{{scope.row.ZeissDocDes}}</div>
           </template>
         </el-table-column>
+        <el-table-column label="Fiscal Year" :width="200" prop="ZeissFiscalYear"
+              :filters="fiscalYearFilter" :filter-method="filterFiscalYear" filter-placement="top">
+          <template scope="scope">
+            <div  class="colfontsize" >{{scope.row.ZeissFiscalYear}}</div>
+          </template>
+        </el-table-column>
         <el-table-column label="Keywords" :width="200" prop="TaxKeywordTaxHTField"
               :filters="tagFilter" :filter-method="filterTag" filter-placement="top">
           <template scope="scope">
@@ -56,13 +62,13 @@
             <div class="colfontsize">{{scope.row.ZeissProjectDocType}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="Author" :width="160"  sortable prop="Author"  :show-overflow-tooltip=true
+        <el-table-column label="Author" :width="160"  sortable prop="ZeissDocAuthor"  :show-overflow-tooltip=true
               :filters="authorFilter" :filter-method="filterAuthor" filter-placement="top">
           <template scope="scope">
-            <div class="colfontsize">{{scope.row.Author}}</div>
+            <div class="colfontsize">{{scope.row.ZeissDocAuthor}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="Created Date" :width="180"  sortable prop="Created"
+        <!--<el-table-column label="Created Date" :width="180"  sortable prop="Created"
             :filters="dateFilter" :filter-method="filterCreateDate" filter-placement="top">
           <template scope="scope">
             <el-icon name="time"></el-icon>
@@ -82,6 +88,7 @@
             <span style="margin-left: 10px"  class="colfontsize">{{ scope.row.Modified.substring(0, 10) }}</span>
           </template>
         </el-table-column>
+        -->
       </el-table>
     </div>
     </el-col>
@@ -91,18 +98,18 @@
 <script>
   export default {
     name: 'SearchResult',
-    props: ['resultData', 'dateFilter', 'authorFilter', 'modifiedDateFilter', 'editorFilter', 'tagFilter',
+    props: ['resultData',  'authorFilter',  'tagFilter',"fiscalYearFilter",
     'departmentFilter', 'projectDoctypeFileter', 'projectNameFilter' ,'vendorFilter', 'tbHeight'],
     data() {
       return {
       }
     },
     methods: {
-      filterCreateDate: function(value, row) {
-        return row.Created.indexOf(value) >= 0;
-      },
+      // filterCreateDate: function(value, row) {
+      //   return row.Created.indexOf(value) >= 0;
+      // },
       filterAuthor: function(value, row) {
-        return row.Author === value;
+        return row.ZeissDocAuthor === value;
       },
       filterTag: function(value, row) {
         for(var i = 0; i < row.TaxKeywordTaxHTField.length; i++) {
@@ -118,12 +125,12 @@
       filterProjectDocType: function(value, row) {
         return row.ZeissProjectDocType === value;
       },
-      filterEditor: function(value, row) {
-        return row.Editor === value;
-      },
-      filterModifiedDate(value, row) {
-        return row.Modified.indexOf(value) >= 0;
-      },
+      // filterEditor: function(value, row) {
+      //   return row.Editor === value;
+      // },
+      // filterModifiedDate(value, row) {
+      //   return row.Modified.indexOf(value) >= 0;
+      // },
       filterProjectName(value, row) {
         if(value != "") {
           return row.ZeissProjectName === value;
@@ -137,7 +144,14 @@
         } else {
           return row.ZeissVendor == null || row.ZeissVendor == "";
         }
+      },
+      filterFiscalYear(value,row) {
+      if(value != "") {
+        return row.ZeissFiscalYear === value;
+      } else {
+        return row.ZeissFiscalYear == null || row.ZeissFiscalYear == "";
       }
+    }
     }
   }
 </script>

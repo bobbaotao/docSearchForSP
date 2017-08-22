@@ -178,6 +178,19 @@
           <el-input placeholder="Vendor" v-model="vendorKeywords">
           </el-input>
         </el-col>
+         <el-col :span="3" class="keywordTitle">
+          Fiscal Year:
+        </el-col>
+        <el-col :span="2">
+          <el-select v-model="csFiscalYearKeywords">
+            <el-option v-for="item in conditionOptions" :key="item.value" :label="item.value" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="7">
+          <el-input placeholder="Fiscal Year" v-model="fiscalYearKeywords">
+          </el-input>
+        </el-col>
       </el-row>
       <el-row  :gutter="5" class="bigRow btnRow">
 
@@ -231,9 +244,12 @@
           csProjectDocTypeKeyowrds : "And",
           vendorKeywords: "",
           csVendorKeywords: "And",
+          fiscalYearKeywords: "",
+          csFiscalYearKeywords: "And",
           conditionOptions: [{value: "And"}, {value: "Or"}],
           departmentOptions: [{value: "MED"},{value: "MIK"},{value: "IMT"},{value: "Vision"},{value: "SHIC"},{value: "CZFS"},{value: "CZIMT"},{value: "CZSZ"},{value: "Corporate"}],
-          projectDocTypeOptions:[{value: "Market research"},{value: "Strategic planning"},{value: "Financial Reporting & Analysis"},{value: "Articles & Reports"},{value: "Project documents"},{value: "Budgeting"}]
+          projectDocTypeOptions:[{value: "Market research"},{value: "Strategic planning"},{value: "Financial Reporting & Analysis"},
+          {value: "Articles & Reports"},{value: "Project documents"},{value: "Budgeting"},{value: "Legal Document"}]
         }
       },
       methods: {
@@ -272,12 +288,21 @@
                 + "]]></Value></Contains>");
               }
             }
+            if(this.fiscalYearKeywords != null && this.fiscalYearKeywords != ""  && this.fiscalYearKeywords.trim() != "") {
+              if(this.csFiscalYearKeywords === 'Or') {
+                searchOrConditin.push("<Contains><FieldRef Name='ZeissFiscalYear' /><Value Type='Text'><![CDATA[" + this.fiscalYearKeywords.trim()
+                + "]]></Value></Contains>");
+              } else {
+                searchConditions.push("<Contains><FieldRef Name='ZeissFiscalYear' /><Value Type='Text'><![CDATA[" + this.fiscalYearKeywords.trim()
+                + "]]></Value></Contains>");
+              }
+            }
             if(this.authorKeywords != null && this.authorKeywords != "" &&  this.authorKeywords.trim() != "") {
               if(this.csAuthorKeywords === 'Or') {
-                searchOrConditin.push("<Contains><FieldRef Name='Author' /><Value Type='User'><![CDATA["
+                searchOrConditin.push("<Contains><FieldRef Name='ZeissDocAuthor' /><Value Type='User'><![CDATA["
                   + this.authorKeywords.trim() + "]]></Value></Contains>");
               } else {
-                searchConditions.push("<Contains><FieldRef Name='Author' /><Value Type='User'><![CDATA["
+                searchConditions.push("<Contains><FieldRef Name='ZeissDocAuthor' /><Value Type='User'><![CDATA["
                   + this.authorKeywords.trim() + "]]></Value></Contains>");
               }
             }

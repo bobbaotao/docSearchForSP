@@ -74,6 +74,15 @@
               </div>
             </el-col>
           </el-row>
+           <el-row :gutter="20" class="bigRow">
+             <el-col :span="6" :offset="3">
+              <div class="linkBox" v-on:click="searchByType('Legal Document')">
+                <img class="docTypeImg" src="../assets/LegalDocument.png" />
+                <br />
+                Legal Document
+              </div>
+            </el-col>
+           </el-row>
         </div>
       </el-col>
     </el-row>
@@ -103,7 +112,7 @@
              "]]></Value></Contains></Or><Contains><FieldRef Name='ZeissProjectName' /><Value Type='Text'><![CDATA[" + this.searchKeywords.trim()
              + "]]></Value></Contains></Or><Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'><![CDATA[" + this.searchKeywords.trim()
              + "]]></Value></Eq></Or> <Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA[" + this.searchKeywords.trim() +
-             "]]></Value></Eq></Or></Where>";
+             "]]></Value></Eq></Or></Where><OrderBy><FieldRef Name='Created' Ascending='False' /></OrderBy>";
 
           //this.$emit("dosearch", strquery);
           this.$router.push({name: 'SearchPage', params: {queryText: strquery}});
@@ -113,7 +122,7 @@
         },
         searchByType: function(docType) {
           var strquery = "<Where><Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA["
-            + docType + "]]></Value></Eq></Where>"
+            + docType + "]]></Value></Eq></Where><OrderBy><FieldRef Name='Created' Ascending='False' /></OrderBy>"
 
             this.$router.push({name: 'SearchPage', params: {queryText: strquery, isGroup : true, groupKey: "ZeissDepartmentOfDoc"}});
         }
@@ -145,22 +154,22 @@
 
 .searchSwitchContainer
 {
-  padding-top: 20px;
+  padding-top: 15px;
   display: block;
 }
 .searchContainer
 {
-  padding-top: 15px;
+  padding-top: 10px;
   display: block;
   width: 100%;
 }
 .bigRow
 {
-  padding-top: 15px;
+  padding-top: 10px;
 }
 .btnRow
 {
-  margin-top: 15px;
+  margin-top: 10px;
 }
 .docTypeImg
 {
@@ -168,8 +177,8 @@
 }
 .ImgLinkRow
 {
-  margin-top: 40px;
-  margin-bottom: 25px;
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 .topLogo
 {

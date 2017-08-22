@@ -1,14 +1,17 @@
 <template>
+  <div>
   <el-row :gutter="10" class="bigRow">
-    <el-col :span="5" :offset="1">
+    <el-col :span="22" :offset="1">
       <div class="groupitem" v-bind:class="{groupitem_selected : group.isSelect}" v-for="group in groups" >
         <!-- <i v-if="group.isSelect" class="el-icon-caret-bottom"></i>
         <i v-else class="el-icon-caret-right"></i>&nbsp;&nbsp;{{group.key}}&nbsp;({{group.num}}) -->
         <el-checkbox v-on:change="filterByKey()" v-model="group.isSelect">{{group.key}}&nbsp;({{group.num}})</el-checkbox>
       </div>
     </el-col>
-    <el-col :span="17">
-      <el-table :data="resultData" stripe  :max-height="tbHeight" :border=false>
+  </el-row>
+    <el-row :gutter="10">
+    <el-col :span="22" :offset="1">
+      <el-table :data="resultData" stripe  :max-height="tbHeight - 60" :border=false>
         <el-table-column :width="50" fixed>
           <template scope="scope">
             <img style="padding-top:5px" v-bind:src="scope.row._FileIcon" />
@@ -31,6 +34,12 @@
         <el-table-column label="Description" :width="250">
           <template scope="scope">
             <div  class="colfontsize" >{{scope.row.ZeissDocDes}}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Fiscal Year" :width="200" prop="ZeissFiscalYear"
+              :filters="fiscalYearFilter" :filter-method="filterFiscalYear" filter-placement="top">
+          <template scope="scope">
+            <div  class="colfontsize" >{{scope.row.ZeissFiscalYear}}</div>
           </template>
         </el-table-column>
         <el-table-column label="Keywords" :width="200" prop="TaxKeywordTaxHTField"
@@ -63,13 +72,13 @@
             {{scope.row.ZeissProjectDocType}}
           </template>
         </el-table-column> -->
-        <el-table-column label="Author" :width="160"  sortable prop="Author"  :show-overflow-tooltip=true
+        <el-table-column label="Author" :width="160"  sortable prop="ZeissDocAuthor"  :show-overflow-tooltip=true
               :filters="authorFilter" :filter-method="filterAuthor" filter-placement="top">
           <template scope="scope">
-            <div  class="colfontsize">{{scope.row.Author}}</div>
+            <div  class="colfontsize">{{scope.row.ZeissDocAuthor}}</div>
           </template>
         </el-table-column>
-        <el-table-column label="Created Date" :width="180" sortable prop="Created"
+    <!--   <el-table-column label="Created Date" :width="180" sortable prop="Created"
             :filters="dateFilter" :filter-method="filterCreateDate" filter-placement="top">
           <template scope="scope">
             <el-icon name="time"></el-icon>
@@ -88,10 +97,12 @@
             <el-icon name="time"></el-icon>
             <span style="margin-left: 10px" class="colfontsize" >{{ scope.row.Modified.substring(0, 10) }}</span>
           </template>
-        </el-table-column>
+        </el-table-column> 
+        -->
       </el-table>
     </el-col>
   </el-row>
+  </div>
 </template>
 
 <script>
@@ -99,8 +110,8 @@ var array = require('array');
 
 export default {
   name: "ResultByGroup",
-  props: ["sourceData","groups","groupKey","dateFilter","authorFilter","modifiedDateFilter",
-  "editorFilter","tagFilter", "projectNameFilter", "vendorFilter", "tbHeight"],
+  props: ["sourceData","groups","groupKey","authorFilter", "fiscalYearFilter",
+  "tagFilter", "projectNameFilter", "vendorFilter", "tbHeight"],
   data () {
     return {
       resultData: this.sourceData
@@ -117,11 +128,11 @@ export default {
     }
   },
   methods: {
-    filterCreateDate: function(value, row) {
-      return row.Created.indexOf(value) >= 0;
-    },
+    // filterCreateDate: function(value, row) {
+    //   return row.Created.indexOf(value) >= 0;
+    // },
     filterAuthor: function(value, row) {
-      return row.Author === value;
+      return row.ZeissDocAuthor === value;
     },
     filterTag: function(value, row) {
       for(var i = 0; i < row.TaxKeywordTaxHTField.length; i++) {
@@ -131,12 +142,12 @@ export default {
       }
       return false;
     },
-    filterEditor: function(value, row) {
-      return row.Editor === value;
-    },
-    filterModifiedDate(value, row) {
-      return row.Modified.indexOf(value) >= 0;
-    },
+    // filterEditor: function(value, row) {
+    //   return row.Editor === value;
+    // },
+    // filterModifiedDate(value, row) {
+    //   return row.Modified.indexOf(value) >= 0;
+    // },
     filterByKey() {
       var selectedArray = new array();
       for(var group in this.groups) {
@@ -172,6 +183,13 @@ export default {
       } else {
         return row.ZeissVendor == null || row.ZeissVendor == "";
       }
+    },
+    filterFiscalYear(value,row) {
+      if(value != "") {
+        return row.ZeissFiscalYear === value;
+      } else {
+        return row.ZeissFiscalYear == null || row.ZeissFiscalYear == "";
+      }
     }
   }
 
@@ -184,9 +202,10 @@ export default {
   line-height: 30px;
   float: left;
   cursor: pointer;
-  width: 90%;
   text-align: left;
   padding-left: 5px;
+  padding-right: 5px;
+  margin-right: 10px;
 }
 .groupitem_selected
 {
@@ -201,5 +220,13 @@ export default {
   font-size: 12px;
   word-break: normal;
   text-align: left;
+}
+.sr-el-tag
+{
+  margin-right: 5px;
+}
+.bigRow
+{
+  margin-bottom: 15px;
 }
 </style>

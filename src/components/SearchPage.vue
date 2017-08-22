@@ -23,15 +23,15 @@
         </el-col>
     </el-row>
       <div class="searchResultContainer" v-if="isShowSearchResult">
-        <ResultByGroup v-if="isGroup" v-bind:sourceData="resultData" v-bind:dateFilter="srCreatedFilters" :tbHeight="tbHeight"
+        <ResultByGroup v-if="isGroup" v-bind:sourceData="resultData"  :tbHeight="tbHeight" 
                     v-bind:authorFilter="srAuthorFilters" v-bind:tagFilter="srTagFilters" v-bind:groups="groups" v-bind:groupKey="groupKey"
-                    v-bind:modifiedDateFilter="srModifiedFilters" v-bind:editorFilter="srEditorFilters"
+                    v-bind:fiscalYearFilter="srFiscalYearFilters"
                     v-bind:projectNameFilter="srProjectNameFilters" v-bind:vendorFilter="srVendorFilters">
 
         </ResultByGroup>
-        <SearchResult v-else v-bind:resultData="resultData" v-bind:dateFilter="srCreatedFilters" v-bind:departmentFilter="srDepartmentFilters"
+        <SearchResult v-else v-bind:resultData="resultData"  v-bind:departmentFilter="srDepartmentFilters"
                     v-bind:authorFilter="srAuthorFilters" v-bind:tagFilter="srTagFilters" v-bind:projectDoctypeFileter="srProjectDocTypeFilters"
-                    v-bind:modifiedDateFilter="srModifiedFilters" v-bind:editorFilter="srEditorFilters"  :tbHeight="tbHeight"
+                     :tbHeight="tbHeight" v-bind:fiscalYearFilter="srFiscalYearFilters"
                     v-bind:projectNameFilter="srProjectNameFilters" v-bind:vendorFilter="srVendorFilters">
         </SearchResult>
 
@@ -63,13 +63,14 @@
                   searchKey: "",
                   message:"",
                   resultData: [{create:"",FileRef:"",FileLeafRef:"",Author:"",TaxKeywordTaxHTField:[]}],
-                  srCreatedFilters: [],
+                  //srCreatedFilters: [],
                   srAuthorFilters: [],
                   srTagFilters: [],
                   srDepartmentFilters: [],
                   srProjectDocTypeFilters: [],
-                  srModifiedFilters: [],
-                  srEditorFilters: [],
+                  srFiscalYearFilters: [],
+                  //srModifiedFilters: [],
+                  //srEditorFilters: [],
                   srProjectNameFilters: [],
                   srVendorFilters: [],
                   isGroup: false,
@@ -114,7 +115,7 @@
                     param : {
                       query: strQuery,
                       viewFields: "<FieldRef Name='FileLeafRef' /><FieldRef Name='FileRef' /><FieldRef Name='Title' /><FieldRef Name='Created' />" +
-                      "<FieldRef Name='File_x0020_Type' /><FieldRef Name='Editor' /><FieldRef Name='Modified' /><FieldRef Name='Author' />" +
+                      "<FieldRef Name='File_x0020_Type' /><FieldRef Name='Author' /><FieldRef Name='ZeissDocAuthor' /><FieldRef Name='ZeissFiscalYear' />" +
                       "<FieldRef Name='TaxKeywordTaxHTField' /><FieldRef Name='File_x0020_Type' /><FieldRef Name='ZeissDepartmentOfDoc' />"
                       + "<FieldRef Name='ZeissProjectName' /><FieldRef Name='ZeissProjectDocType' /><FieldRef Name='ZeissDocDes' /><FieldRef Name='ZeissVendor' />",
                       webScope: "<Webs Scope='Recursive'>",
@@ -127,16 +128,17 @@
                     //console.dir(response);
                     if(response.data.SearchDocByKeyResult.success) {
                       var resultRows = JSON2.parse(response.data.SearchDocByKeyResult.data);
-                      var dateFilter = new array();
+                      //var dateFilter = new array();
                       var authorFilter = new array();
                       var tagFilter = new array();
                       var departmentFilter = new array();
                       var projectDoctypeFileter = new array();
-                      var modifiedDateFilter = new array();
-                      var editorFilter = new array();
+                      //var modifiedDateFilter = new array();
+                      //var editorFilter = new array();
                       var groups = new array();
                       var projectNameFilter = new array();
                       var vendorFilter = new array();
+                      var fiscalYearFilter = new array();
 
                       for(var i=0; i< resultRows.length; i++) {
                         var item = resultRows[i];
@@ -148,13 +150,13 @@
                           item.FileRef = item.FileRef.substring(item.FileRef.indexOf(";#") + 2);
                         }
 
-                        if(item.Author.indexOf(";#") > 0) {
-                          item.Author = item.Author.substring(item.Author.indexOf(";#") + 2);
+                        if(item.ZeissDocAuthor.indexOf(";#") > 0) {
+                          item.ZeissDocAuthor = item.ZeissDocAuthor.substring(item.ZeissDocAuthor.indexOf(";#") + 2);
                         }
 
-                        if(item.Editor.indexOf(";#") > 0) {
-                          item.Editor = item.Editor.substring(item.Editor.indexOf(";#") + 2);
-                        }
+                        // if(item.Editor.indexOf(";#") > 0) {
+                        //   item.Editor = item.Editor.substring(item.Editor.indexOf(";#") + 2);
+                        // }
 
                         //init doc icon
                         if(item.File_x0020_Type == null || item.File_x0020_Type == "") {
@@ -191,14 +193,26 @@
                           }
                         }
 
-                        var createdDate = item.Created.substring(0,10);
-                        dateFilter.push({text: createdDate, value: createdDate});
+                        // var createdDate = item.Created.substring(0,10);
+                        // dateFilter.push({text: createdDate, value: createdDate});
 
-                        var modifiedDate = item.Modified.substring(0,10);
-                        modifiedDateFilter.push({text: modifiedDate, value:modifiedDate});
+                        // var modifiedDate = item.Modified.substring(0,10);
+                        // modifiedDateFilter.push({text: modifiedDate, value:modifiedDate});
 
-                        authorFilter.push({text: item.Author, value: item.Author});
-                        editorFilter.push({text: item.Editor, value: item.Editor});
+                        if(item.ZeissDocAuthor != null && item.ZeissDocAuthor != '')
+                        {
+                          authorFilter.push({text: item.ZeissDocAuthor, value: item.ZeissDocAuthor});
+                        } else {
+                          authorFilter.push({text: "", value: ""});
+                        }
+                        //editorFilter.push({text: item.Editor, value: item.Editor});
+                        
+                        if(item.ZeissFiscalYear != null && item.ZeissFiscalYear != '')
+                        {
+                          fiscalYearFilter.push({text: item.ZeissFiscalYear, value: item.ZeissFiscalYear});
+                        } else {
+                          fiscalYearFilter.push({text: "", value: ""});
+                        }
 
                         if(item.ZeissProjectName != null && item.ZeissProjectName != '')
                         {
@@ -227,15 +241,16 @@
                         }
                       }
                       //set filters
-                      this.srCreatedFilters = dateFilter.unique("value").toArray();
+                      //this.srCreatedFilters = dateFilter.unique("value").toArray();
                       this.srAuthorFilters = authorFilter.unique("value").toArray();
                       this.srTagFilters = tagFilter.unique("value").toArray();
                       var uniqueDepartment = departmentFilter.unique("value").toArray();
                       var uniqueProjectDocType = projectDoctypeFileter.unique("value").toArray();
                       this.srDepartmentFilters = uniqueDepartment;
                       this.srProjectDocTypeFilters = uniqueProjectDocType;
-                      this.srModifiedFilters = modifiedDateFilter.unique("value").toArray();
-                      this.srEditorFilters = editorFilter.unique("value").toArray();
+                      this.srFiscalYearFilters = fiscalYearFilter.unique("value").toArray();
+                      //this.srModifiedFilters = modifiedDateFilter.unique("value").toArray();
+                      //this.srEditorFilters = editorFilter.unique("value").toArray();
                       this.srProjectNameFilters = projectNameFilter.unique("value").toArray();
                       this.srVendorFilters = vendorFilter.unique("value").toArray();
 
@@ -290,7 +305,7 @@
 
 <style scoped>
 .errorMessage {
-  padding-top: 15px;
+  padding-top: 5px;
   padding-left: 50px;
   color: red;
 }
