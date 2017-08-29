@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueGoodTable from 'vue-good-table';
+//import VueGoodTable from 'vue-good-table';
 import Element from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import locale from 'element-ui/lib/locale/lang/en';
@@ -12,14 +12,14 @@ import VueAxios from 'vue-axios';
 require('es6-promise').polyfill();
 
 Vue.config.productionTip = false
-Vue.use(VueGoodTable);
-Vue.use(Element, {locale});
+    //Vue.use(VueGoodTable);
+Vue.use(Element, { locale });
 Vue.use(VueAxios, axios);
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
+    el: '#app',
+    router,
+    template: '<App/>',
+    components: { App }
 })

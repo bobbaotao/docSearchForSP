@@ -258,6 +258,7 @@
             this.message = "";
             var searchConditions = new array();
             var searchOrConditin = new array();
+
             //push search keywords to array
             if(this.titleKeywords != null && this.titleKeywords != "" && this.titleKeywords.trim() != "") {
               if(this.csTitleKeywords === 'Or') {
@@ -432,6 +433,8 @@
               this.message ="Please at least input one search parameter";
               return;
             }
+
+            searchConditions.push("<IsNotNull><FieldRef Name='File_x0020_Type' /></IsNotNull>");
 
             //join all And parameter;
             var strqueryAnd = "";

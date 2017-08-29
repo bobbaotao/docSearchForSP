@@ -5,7 +5,7 @@
         <img class="topLogo" src="../assets/Logo.png" />
       </el-col>
       <el-col :span="18">
-        <h1>ZEISS Knowledge Management System</h1>
+        <h1>ZEISS Knowledge Center</h1>
       </el-col>
     </el-row>
     <el-row :gutter="10" class="bigRow">
@@ -106,13 +106,13 @@
       components: {LeftNavigation},
       methods: {
         search: function() {
-          var strquery = "<Where><Or><Or><Or><Or><Or><Contains><FieldRef Name='Title' /><Value Type='Text'><![CDATA[" + this.searchKeywords.trim() +
+          var strquery = "<Where><And><Or><Or><Or><Or><Or><Contains><FieldRef Name='Title' /><Value Type='Text'><![CDATA[" + this.searchKeywords.trim() +
             "]]></Value></Contains><Contains><FieldRef Name='TaxKeyword' /><Value Type='TaxonomyFieldTypeMulti'><![CDATA[" + this.searchKeywords.trim()
              + "]]></Value></Contains></Or><Contains><FieldRef Name='FileLeafRef' /><Value Type='Text'><![CDATA[" + this.searchKeywords.trim() +
              "]]></Value></Contains></Or><Contains><FieldRef Name='ZeissProjectName' /><Value Type='Text'><![CDATA[" + this.searchKeywords.trim()
              + "]]></Value></Contains></Or><Eq><FieldRef Name='ZeissDepartmentOfDoc' /><Value Type='Choice'><![CDATA[" + this.searchKeywords.trim()
              + "]]></Value></Eq></Or> <Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA[" + this.searchKeywords.trim() +
-             "]]></Value></Eq></Or></Where><OrderBy><FieldRef Name='Created' Ascending='False' /></OrderBy>";
+             "]]></Value></Eq></Or><IsNotNull><FieldRef Name='File_x0020_Type' /></IsNotNull></And></Where><OrderBy><FieldRef Name='Created' Ascending='False' /></OrderBy>";
 
           //this.$emit("dosearch", strquery);
           this.$router.push({name: 'SearchPage', params: {queryText: strquery}});
@@ -121,8 +121,8 @@
           this.$router.push({name: 'AdvancedSearch'});
         },
         searchByType: function(docType) {
-          var strquery = "<Where><Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA["
-            + docType + "]]></Value></Eq></Where><OrderBy><FieldRef Name='Created' Ascending='False' /></OrderBy>"
+          var strquery = "<Where><And><Eq><FieldRef Name='ZeissProjectDocType' /><Value Type='Choice'><![CDATA["
+            + docType + "]]></Value></Eq><IsNotNull><FieldRef Name='File_x0020_Type' /></IsNotNull></And></Where><OrderBy><FieldRef Name='Created' Ascending='False' /></OrderBy>"
 
             this.$router.push({name: 'SearchPage', params: {queryText: strquery, isGroup : true, groupKey: "ZeissDepartmentOfDoc"}});
         }
