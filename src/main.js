@@ -9,6 +9,7 @@ import 'element-ui/lib/theme-default/index.css';
 import locale from 'element-ui/lib/locale/lang/en';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+
 require('es6-promise').polyfill();
 
 Vue.config.productionTip = false

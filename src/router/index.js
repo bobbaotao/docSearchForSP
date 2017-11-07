@@ -7,6 +7,8 @@ import AdvancedSearch from '@/components/AdvancedSearch'
 //import SearchResult from '@/components/SearchResult'
 //import LeftNavigation from '@/components/LeftNavigation'
 import ResultByGroup from '@/components/ResultByGroup'
+import DocAuditReport from '@/components/DocAuditReport'
+import AllDocInfoReport from '@/components/AllDocInfoReport'
 
 Vue.use(Router)
 
@@ -37,6 +39,18 @@ export default new Router({
       path: '/ResultByGroup',
       name: 'ResultByGroup',
       component: ResultByGroup
+    }
+    ,
+    {
+      path: '/DocAuditReport',
+      name: 'DocAuditReport',
+      component: DocAuditReport
+    }
+    ,
+    {
+      path: '/AllDocInfoReport',
+      name: 'AllDocInfoReport',
+      component: AllDocInfoReport
     }
   ]
 })

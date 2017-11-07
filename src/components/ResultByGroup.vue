@@ -97,7 +97,7 @@
             <el-icon name="time"></el-icon>
             <span style="margin-left: 10px" class="colfontsize" >{{ scope.row.Modified.substring(0, 10) }}</span>
           </template>
-        </el-table-column> 
+        </el-table-column>
         -->
       </el-table>
     </el-col>
